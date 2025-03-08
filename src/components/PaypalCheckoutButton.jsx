@@ -1,3 +1,4 @@
+// src/components/PaypalCheckoutButton.jsx
 import React, { useEffect } from 'react';
 
 const PaypalCheckoutButton = ({ total, currency, onSuccess }) => {
@@ -6,24 +7,24 @@ const PaypalCheckoutButton = ({ total, currency, onSuccess }) => {
     console.log("PayPal Client ID:", clientId);
 
     const script = document.createElement("script");
-    // La URL incluirá la moneda que se pasa; en este caso, 'CLP'
     script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=${currency}`;
     script.async = true;
     script.onload = () => {
       if (window.paypal) {
         window.paypal.Buttons({
           createOrder: async (data, actions) => {
-            const res = await fetch("http://localhost:5000/api/paypal/create-order", {
+            // Actualizamos la URL para apuntar al backend en Render
+            const res = await fetch("https://proyecto-final-e-commerce-backend.onrender.com/api/paypal/create-order", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              // Envía total en CLP y la moneda correspondiente
               body: JSON.stringify({ total, currency }),
             });
             const orderData = await res.json();
             return orderData.id;
           },
           onApprove: async (data, actions) => {
-            const res = await fetch(`http://localhost:5000/api/paypal/capture-order/${data.orderID}`, {
+            // Actualizamos la URL para apuntar al backend en Render
+            const res = await fetch(`https://proyecto-final-e-commerce-backend.onrender.com/api/paypal/capture-order/${data.orderID}`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
             });

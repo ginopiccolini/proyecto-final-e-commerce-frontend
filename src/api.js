@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://proyecto-backend.onrender.com',  // URL pública de tu backend en Render
+  baseURL: import.meta.env.VITE_BACKEND_URL, // Usa la variable de entorno
 });
 
 api.interceptors.request.use((config) => {
