@@ -4,16 +4,18 @@ import { AppContext } from '../context/AppContext';
 
 const Profile = () => {
   const { state } = useContext(AppContext);
-  const { user } = state; 
+  const { user } = state;
+
+  // Agrega este console.log para ver el contenido de 'user'
+  console.log("Datos de usuario en Profile:", user);
 
   return (
-    <div>
+    <div className="container mt-4">
       <h2>Mi Perfil</h2>
       {user ? (
         <div>
-          <p><strong>Email:</strong> {user.email}</p>
           <p><strong>Nombre:</strong> {user.name}</p>
-          {/* Muestra más datos según tu modelo de usuario */}
+          <p><strong>Email:</strong> {user.email}</p>
         </div>
       ) : (
         <p>No has iniciado sesión.</p>

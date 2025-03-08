@@ -1,77 +1,57 @@
 // src/pages/Login.jsx
 import React, { useState, useContext } from 'react';
-import api from '../api';
 import { AppContext } from '../context/AppContext';
+import api from '../api';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const { dispatch } = useContext(AppContext); // Para actualizar el estado global
-
+  const { dispatch } = useContext(AppContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  // Estados para mensajes o errores
   const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
       const response = await api.post('/api/users/login', { email, password });
-      // Ej: { message: 'Login exitoso', token, user: { email, name } }
-
-      // Guardar token en localStorage o en el estado global
       const { token, user } = response.data;
-
-      // Ejemplo: Guardar token en localStorage
+      
+      // Agrega este console.log para verificar que 'user' tiene datos
+      console.log("Usuario recibido:", user);
+      
+      // Guarda el token en localStorage
       localStorage.setItem('token', token);
-
-      // Guardar usuario en el estado global
+      
+      // Actualiza el contexto con el usuario
       dispatch({ type: 'SET_USER', payload: user });
-
+      
       setMessage(response.data.message);
-      setError('');
-
-      // Limpiar campos
       setEmail('');
       setPassword('');
-    } catch (err) {
-      setMessage('');
-      if (err.response) {
-        setError(err.response.data.message || 'Error al iniciar sesión');
-      } else {
-        setError('Error de conexión con el servidor');
-      }
+      
+      // Redirige a la página principal
+      navigate('/');
+    } catch (error) {
+      console.error(error);
+      setMessage(error.response.data.message || 'Error al iniciar sesión');
     }
   };
 
   return (
-    <div>
+    <div className="container mt-4">
       <h2>Iniciar Sesión</h2>
-      {message && <p style={{ color: 'green' }}>{message}</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
+      {message && <div className="alert alert-info">{message}</div>}
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="mb-3">
           <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <input className="form-control" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </div>
-
-        <div>
+        <div className="mb-3">
           <label>Contraseña</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <input className="form-control" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
-
-        <button type="submit">Ingresar</button>
+        <button className="btn btn-primary" type="submit">Iniciar Sesión</button>
       </form>
     </div>
   );

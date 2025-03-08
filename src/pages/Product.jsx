@@ -27,42 +27,21 @@ const Product = () => {
 
   const handleAddToCart = () => {
     if (product) {
-      // Despachamos la acción ADD_TO_CART con la info del producto
-      dispatch({
-        type: 'ADD_TO_CART',
-        payload: {
-          product,
-          quantity: 1, // Cantidad inicial
-        },
-      });
+      dispatch({ type: 'ADD_TO_CART', payload: { product, quantity: 1 } });
       alert(`Agregado al carrito: ${product.name}`);
     }
   };
 
-  if (error) {
-    return <p style={{ color: 'red' }}>{error}</p>;
-  }
-
-  if (!product) {
-    return <p>Cargando producto...</p>;
-  }
+  if (error) return <div className="container mt-4"><div className="alert alert-danger">{error}</div></div>;
+  if (!product) return <div className="container mt-4"><p>Cargando producto...</p></div>;
 
   return (
-    <div>
-      <h2>Detalle del Producto</h2>
-      <p><strong>ID:</strong> {product._id}</p>
-      <p><strong>Nombre:</strong> {product.name}</p>
-      <p><strong>Precio:</strong> ${product.price}</p>
-      <p><strong>Descripción:</strong> {product.description}</p>
-      {product.imageUrl && (
-        <img
-          src={product.imageUrl}
-          alt={product.name}
-          style={{ maxWidth: '200px' }}
-        />
-      )}
-      <br />
-      <button onClick={handleAddToCart}>Agregar al Carrito</button>
+    <div className="container mt-4">
+      <h2>{product.name}</h2>
+      {product.imageUrl && <img src={product.imageUrl} alt={product.name} className="img-fluid mb-3" />}
+      <p className="fs-4">${product.price}</p>
+      <p>{product.description}</p>
+      <button className="btn btn-success" onClick={handleAddToCart}>Agregar al Carrito</button>
     </div>
   );
 };

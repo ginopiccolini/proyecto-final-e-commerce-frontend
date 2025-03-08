@@ -1,98 +1,59 @@
 // src/pages/SignUp.jsx
 import React, { useState } from 'react';
-import api from '../api'; // <-- Importamos la instancia de Axios
+import api from '../api';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
-  // Estados para manejar mensajes o errores
   const [message, setMessage] = useState('');
-  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    // Verificar que las contraseñas coincidan
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (password !== confirmPassword) {
-      setError('Las contraseñas no coinciden');
+      setMessage('Las contraseñas no coinciden');
       return;
     }
-
     try {
-      const response = await api.post('/api/users/register', {
-        email,
-        password,
-        name,
-      });
-      setMessage(response.data.message); // "Usuario registrado con éxito"
-      setError('');
-      // Limpia los campos si deseas
+      const response = await api.post('/api/users/register', { email, name, password });
+      setMessage(response.data.message);
       setEmail('');
       setName('');
       setPassword('');
       setConfirmPassword('');
-    } catch (err) {
-      // Si el backend retorna un error, lo capturamos aquí
-      setMessage('');
-      if (err.response) {
-        setError(err.response.data.message || 'Error al registrar');
-      } else {
-        setError('Error de conexión con el servidor');
-      }
+      // Redirige al login
+      navigate('/login');
+    } catch (error) {
+      console.error(error);
+      setMessage(error.response.data.message || 'Error al registrar');
     }
   };
 
   return (
-    <div>
-      <h2>Crear Cuenta</h2>
-      {message && <p style={{ color: 'green' }}>{message}</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-
+    <div className="container mt-4">
+      <h2>Registrarse</h2>
+      {message && <div className="alert alert-info">{message}</div>}
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nombre</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-
-        <div>
+        <div className="mb-3">
           <label>Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+          <input className="form-control" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </div>
-
-        <div>
+        <div className="mb-3">
+          <label>Nombre</label>
+          <input className="form-control" type="text" value={name} onChange={(e) => setName(e.target.value)} />
+        </div>
+        <div className="mb-3">
           <label>Contraseña</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <input className="form-control" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </div>
-
-        <div>
+        <div className="mb-3">
           <label>Confirmar Contraseña</label>
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
+          <input className="form-control" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
         </div>
-
-        <button type="submit">Registrarse</button>
+        <button className="btn btn-primary" type="submit">Registrarse</button>
       </form>
     </div>
   );
