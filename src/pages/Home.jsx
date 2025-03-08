@@ -1,16 +1,35 @@
-// src/pages/Home.jsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
+  // Estilos inline para centrar y limitar el ancho
+  const homeContainerStyle = {
+    maxWidth: '800px',    // Ajusta el ancho máximo que deseas
+    margin: '0 auto',     // Centra horizontalmente
+    textAlign: 'center',  // Centra el texto
+    padding: '3rem 1rem', // Espacio interno
+  };
+
   return (
-    <div className="bg-light min-vh-100 d-flex justify-content-center align-items-center" style={{ backgroundColor: 'var(--color-fondo)' }}>
-      <div style={{ maxWidth: '800px' }} className="w-100 text-center px-3">
-        <h1 className="display-4 mb-3" style={{ color: 'var(--color-acento)' }}>Bienvenido a Mi E-commerce</h1>
-        <p className="lead" style={{ color: 'var(--color-texto)' }}>
-          Descubre nuestros productos y disfruta de una experiencia de compra única.
-        </p>
-        <a href="/products" className="btn btn-primary btn-lg mt-3" style={{ backgroundColor: 'var(--color-acento)', border: 'none' }}>Ver Productos</a>
-      </div>
+    <div style={homeContainerStyle}>
+      <h1 style={{ fontSize: '3rem', marginBottom: '3rem' }}>Bienvenidos a TOP 3 Burger</h1>
+      <p style={{ marginBottom: '5rem' }}>Menos opciones, más sabor</p>
+      <Link
+        to="/products"
+        style={{
+          backgroundColor: '#ff6f00',
+          color: '#fff',
+          fontWeight: '600',
+          fontSize: '1.8rem',
+          padding: '0.8rem 1.5rem',
+          borderRadius: '4px',
+          textDecoration: 'none',
+          boxShadow: '0 2px 6px rgba(27, 27, 27, 0.3)',
+          transition: 'background-color 0.3s',
+        }}
+      >
+        Ver Productos
+      </Link>
     </div>
   );
 };

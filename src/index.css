@@ -1,50 +1,119 @@
 :root {
-  /* Variables de color */
-  --color-fondo: #ffffff;      /* Fondo blanco */
-  --color-texto: #333333;       /* Texto oscuro */
-  --color-acento: #1a1a1a;      /* Elementos destacados, casi negro */
-  --color-secundario: #666666;  /* Texto secundario o de apoyo */
-  
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color: var(--color-texto);
-  background-color: var(--color-fondo);
-  
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  /* Paleta de colores para un tema oscuro con alto contraste */
+  --bg-color: #121212;             /* Fondo oscuro */
+  --text-color: #979797;           /* Texto gris claro */
+  --accent-primary: #ff8c00;       /* Naranja brillante para acentos */
+  --accent-secondary: #ff9a03;      /* Naranja más claro para acentos secundarios */
+  --hover-primary: #e07b00;       /* Naranja más oscuro al hacer hover */
+  --navbar-bg: #121212;            /* Fondo del navbar oscuro */
+  --navbar-text: #ffffff;          /* Texto del navbar en blanco */
+  --card-bg: #1e1e1e;              /* Fondo de tarjetas oscuro */
+  --card-text: #ffffff;            /* Texto en tarjetas en blanco */
+  --button-bg: var(--accent-primary);
+  --button-text: var(--bg-color);
+  --border-color: #333333;         /* Borde sutil */
 }
 
-/* Estilos básicos para enlaces y botones minimalistas */
+/* Aplicación global */
+body {
+  margin: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* Estilo para la sección de Bienvenida */
+.home-welcome {
+  font-size: 3rem;
+  font-weight: bold;
+  color: var(--text-color);
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+}
+
+/* Enlaces */
 a {
-  color: var(--color-acento);
+  color: var(--accent-primary);
   text-decoration: none;
   transition: color 0.25s;
 }
 
 a:hover {
-  color: var(--color-secundario);
+  color: var(--hover-primary);
 }
 
+/* Botones */
 button {
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  background-color: var(--color-acento);
-  color: #fff;
-  cursor: pointer;
   border-radius: 4px;
+  padding: 0.7em 1.4em;
+  font-size: 1em;
+  font-weight: 600;
+  background-color: var(--accent-primary);
+  color: var(--bg-color);
+  border: none;
+  cursor: pointer;
   transition: background-color 0.3s;
 }
 
 button:hover {
-  background-color: var(--color-secundario);
+  background-color: var(--hover-primary);
 }
 
-/* Opcional: quitar sombras o adornos adicionales para un look más plano */
+/* Navbar */
 .navbar {
-  box-shadow: none !important;
+  background-color: var(--navbar-bg) !important;
+  border-bottom: 2px solid var(--accent-secondary);
 }
+
+.navbar-brand,
+.nav-link {
+  color: var(--navbar-text) !important;
+  font-weight: 600;
+  position: relative;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-link:hover {
+  background-color: rgba(255, 140, 0, 0.2); /* fondo naranja semitransparente al hover */
+  color: var(--hover-primary) !important;
+  border-radius: 4px;
+}
+
+/* Tarjetas (Cards) */
+.card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+}
+
+.card-title,
+.card-text {
+  color: var(--card-text);
+}
+
+/* Formularios */
+.form-control {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.form-control:focus {
+  border-color: var(--accent-secondary);
+  box-shadow: none;
+}
+
+/* Alertas */
+.alert {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border: 1px solid var(--border-color);
+}
+
+/* Contenedores generales */
+.container {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+

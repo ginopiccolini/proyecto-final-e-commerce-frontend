@@ -1,4 +1,3 @@
-// src/pages/Product.jsx
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../api';
@@ -8,7 +7,11 @@ const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [error, setError] = useState('');
-  const { dispatch } = useContext(AppContext);
+  const { state, dispatch } = useContext(AppContext);
+  
+  // Busca en el carrito si este producto ya está agregado
+  const cartItem = state.cart.find(item => item.product._id === id);
+  const quantityInCart = cartItem ? cartItem.quantity : 0;
 
   const fetchProduct = async () => {
     try {
@@ -38,10 +41,19 @@ const Product = () => {
   return (
     <div className="container mt-4">
       <h2>{product.name}</h2>
-      {product.imageUrl && <img src={product.imageUrl} alt={product.name} className="img-fluid mb-3" />}
+      {product.imageUrl && (
+        <img src={product.imageUrl} alt={product.name} className="img-fluid mb-3" />
+      )}
       <p className="fs-4">${product.price}</p>
       <p>{product.description}</p>
-      <button className="btn btn-success" onClick={handleAddToCart}>Agregar al Carrito</button>
+      <button className="btn btn-success" onClick={handleAddToCart}>
+        Agregar al Carrito
+      </button>
+      {quantityInCart > 0 && (
+        <span className="badge bg-info text-dark ms-2">
+          Cantidad en carrito: {quantityInCart}
+        </span>
+      )}
     </div>
   );
 };

@@ -7,8 +7,18 @@ const Cart = () => {
   const { state, dispatch } = useContext(AppContext);
   const { cart } = state;
 
-  const handleRemove = (productId) => {
-    dispatch({ type: 'REMOVE_FROM_CART', payload: productId });
+  const handleIncrease = (productId) => {
+    const item = cart.find(item => item.product._id === productId);
+    if (item) {
+      dispatch({ type: 'UPDATE_QUANTITY', payload: { productId, quantity: item.quantity + 1 } });
+    }
+  };
+
+  const handleDecrease = (productId) => {
+    const item = cart.find(item => item.product._id === productId);
+    if (item) {
+      dispatch({ type: 'UPDATE_QUANTITY', payload: { productId, quantity: item.quantity - 1 } });
+    }
   };
 
   const handleClearCart = () => {
@@ -27,14 +37,23 @@ const Cart = () => {
           <ul className="list-group mb-3">
             {cart.map((item) => (
               <li key={item.product._id} className="list-group-item d-flex justify-content-between align-items-center">
-                {item.product.name} - ${item.product.price} x {item.quantity}
-                <button className="btn btn-danger btn-sm" onClick={() => handleRemove(item.product._id)}>Quitar</button>
+                <div>
+                  {item.product.name} - ${item.product.price}
+                  <div className="d-inline-block ms-3">
+                    <button className="btn btn-sm btn-secondary me-1" onClick={() => handleDecrease(item.product._id)}>-</button>
+                    <span>{item.quantity}</span>
+                    <button className="btn btn-sm btn-secondary ms-1" onClick={() => handleIncrease(item.product._id)}>+</button>
+                  </div>
+                </div>
+                <span>= ${item.product.price * item.quantity}</span>
               </li>
             ))}
+            <li className="list-group-item">
+              <strong>Total: ${total}</strong>
+            </li>
           </ul>
-          <h4>Total: ${total}</h4>
           <button className="btn btn-warning me-2" onClick={handleClearCart}>Vaciar Carrito</button>
-          <Link className="btn btn-primary" to="/checkout">Proceder al Checkout</Link>
+          <Link className="btn btn-primary" to="/checkout">Proceder Pagar</Link>
         </div>
       )}
     </div>
