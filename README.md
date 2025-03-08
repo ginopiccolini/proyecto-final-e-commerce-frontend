@@ -76,5 +76,3 @@ Rutas Principales:
 Contribución
 Si deseas contribuir, por favor abre un issue o envía un pull request.
 ¡Toda contribución es bienvenida!
-
-Licencia
