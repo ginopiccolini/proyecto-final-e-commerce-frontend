@@ -13,28 +13,28 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("Enviando login con:", { email, password });
     try {
       const response = await api.post('/api/users/login', { email, password });
+      console.log("Respuesta de login:", response.data);
       const { token, user } = response.data;
       
-      // Agrega este console.log para verificar que 'user' tiene datos
-      console.log("Usuario recibido:", user);
-      
-      // Guarda el token en localStorage
       localStorage.setItem('token', token);
-      
-      // Actualiza el contexto con el usuario
       dispatch({ type: 'SET_USER', payload: user });
       
       setMessage(response.data.message);
       setEmail('');
       setPassword('');
       
-      // Redirige a la página principal
-      navigate('/');
+      navigate('/'); // Redirige a la página de inicio
     } catch (error) {
-      console.error(error);
-      setMessage(error.response.data.message || 'Error al iniciar sesión');
+      console.error("Error en login:", error);
+      // Si error.response es undefined, entonces es posible que la conexión falle
+      if (error.response && error.response.data) {
+        setMessage(error.response.data.message);
+      } else {
+        setMessage("Error al iniciar sesión. Revisa la consola para más detalles.");
+      }
     }
   };
 
